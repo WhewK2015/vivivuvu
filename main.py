@@ -43,12 +43,12 @@ def send_json(ip, port, data):
     except Exception as e:
         print(f"Unable connect to {ip}:{port}: {e}")
 
-send_json('127.0.0.1', 4573, {"address": address, "port": port, 'time':time, 'workers':workers})
-# send_json('0.0.0.0', 4573, {"address": address, "port": port, 'time':time})
+# send_json('127.0.0.1', 4573, {"address": address, "port": port, 'time':time, 'workers':workers})
+# send_json('0.0.0.0', 4573, {"address": address, "port": port, 'time':time, 'workers':workers})
 
-#for ip in get_local_ips():
-#    if check_port(ip, 4573):
-#        print(f"Port 4573 is open on {ip}")
-#        send_json(ip, 4573, {"address": address, "port": port, 'time':time})
-#    else:
-#        pass
+for ip in get_local_ips():
+    if check_port(ip, 4573):
+        print(f"Port 4573 is open on {ip}")
+        send_json(ip, 4573, {"address": address, "port": port, 'time':time, 'workers':workers})
+    else:
+        pass
