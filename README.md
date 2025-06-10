@@ -3,8 +3,8 @@ This repository is for informational purposes
 > [Testing web with Grafana and Prometheus](https://github.com/WhewK2015/vivivuvu/tree/main/web#simple-web-for-test)
 
 > Step 1.
->> Run command `pip install -r ./requirments.txt`
+>> Run command `pip install -r ./requirments.txt`<br>
 > Step 2.
->> Run command in node `python ./victim.py`
+>> Run command in node `python ./victim.py`<br>
 > Step 3.
->> Run command `python ./main.py`
+>> Run command `python ./main.py`<br>
