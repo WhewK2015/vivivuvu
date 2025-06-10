@@ -4,3 +4,7 @@ This repository is for informational purposes
 
 > Step 1.
 >> Run command `pip install -r ./requirments.txt`
+> Step 2.
+>> Run command in node `python ./victim.py`
+> Step 3.
+>> Run command `python ./main.py`
