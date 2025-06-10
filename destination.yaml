@@ -1,4 +1,20 @@
-Destination: "http://127.0.0.1"
-Port: 5000
-Time: 30
-Workers: 4
+# Methods:
+#   L7:
+#   - HTTP (GET)
+#   - HTTPS (GET)
+#   L3:
+#   - ICMP (Max 6550 bytes)
+#   L4:
+#   - TCP (Not work) 
+Destination: "193.23.220.20"
+Port: 0
+Time: 60
+Workers: 24
+Method: "ICMP" 
+
+# HTTP Example:
+# Destination: "192.168.4.30"
+# Port: 5000
+# Time: 30
+# Workers: 4
+# Method: "HTTP" 

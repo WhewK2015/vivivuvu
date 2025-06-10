@@ -11,7 +11,7 @@ with open("./destination.yaml", encoding="utf-8") as f:
     port = f["Port"]
     time = f["Time"]
     workers = f["Workers"]
-
+    method = f["Method"]
 def get_local_ips():
     try:
         ip_addresses = re.findall(r'\d+\.\d+\.\d+\.\d+', subprocess.check_output(["arp", "-a"], text=True))
@@ -43,12 +43,12 @@ def send_json(ip, port, data):
     except Exception as e:
         print(f"Unable connect to {ip}:{port}: {e}")
 
-# send_json('127.0.0.1', 4573, {"address": address, "port": port, 'time':time, 'workers':workers})
-# send_json('0.0.0.0', 4573, {"address": address, "port": port, 'time':time, 'workers':workers})
+# send_json('127.0.0.1', 4573, {"address": address, "port": port, 'time':time, 'workers':workers, 'method': method})
+# send_json('0.0.0.0', 4573, {"address": address, "port": port, 'time':time, 'workers':workers, 'method': method})
 
 for ip in get_local_ips():
     if check_port(ip, 4573):
         print(f"Port 4573 is open on {ip}")
-        send_json(ip, 4573, {"address": address, "port": port, 'time':time, 'workers':workers})
+        send_json(ip, 4573, {"address": address, "port": port, 'time':time, 'workers':workers, 'method': method})
     else:
         pass
